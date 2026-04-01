@@ -1,0 +1,36 @@
+name: Pipefy to Airtable Sync
+
+on:
+  schedule:
+    # O GitHub Actions usa o fuso horário UTC. 
+    # 03:00 UTC é igual a 00:00 (Meia-noite) no Horário de Brasília.
+    # O "2" significa Terça-feira. Ou seja, roda na virada de segunda para terça.
+    - cron: '0 3 * * 2'
+  
+  # Esta linha cria um botão no GitHub para você rodar o script manualmente quando quiser!
+  workflow_dispatch: 
+
+jobs:
+  atualizar-dashboard:
+    runs-on: ubuntu-latest # O servidor que vai rodar o código
+
+    steps:
+      - name: Baixar o código do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar o Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11' # Mude para a versão que você usou no seu PC
+
+      - name: Instalar bibliotecas necessárias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Rodar o script de atualização
+        env:
+          # Aqui conectamos os segredos que você cadastrou com o Python
+          PIPEFY_TOKEN: ${{ secrets.PIPEFY_TOKEN }}
+          AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
+        run: python main.py 

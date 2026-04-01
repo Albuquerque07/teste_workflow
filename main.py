@@ -4,6 +4,7 @@ import time
 import os
 from dotenv import load_dotenv
 
+load_dotenv() #Carrega as variáveis do arquivo .env com os tokens
 # ==========================================
 # CONFIGURAÇÕES E CREDENCIAIS
 # ==========================================
@@ -237,5 +238,5 @@ def sincronizar_dados():
 
     print(f"\n🎉 Tudo finalizado! {cards_processados} cards do Funil foram cruzados e sincronizados com histórico detalhado.")
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     sincronizar_dados()
